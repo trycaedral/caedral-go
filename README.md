@@ -2,12 +2,12 @@
 
 Official Go client for the [Caedral API](https://caedral.com). OpenAI-compatible request shapes with idiomatic Go patterns (`context.Context`, functional options, channel-based streaming).
 
-> **Module path:** This repository uses `github.com/caedral/caedral-go` as a placeholder import path. Replace it with your published module path (for example `github.com/your-org/caedral-go`) before releasing.
+> **Module path:** This repository uses `github.com/trycaedral/caedral-go` as a placeholder import path. Replace it with your published module path (for example `github.com/your-org/caedral-go`) before releasing.
 
 ## Installation
 
 ```bash
-go get github.com/caedral/caedral-go
+go get github.com/trycaedral/caedral-go
 ```
 
 Local development:
@@ -28,7 +28,7 @@ import (
     "log"
     "time"
 
-    "github.com/caedral/caedral-go"
+    "github.com/trycaedral/caedral-go"
 )
 
 func main() {

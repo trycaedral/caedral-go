@@ -1,4 +1,4 @@
-module github.com/caedral/caedral-go
+module github.com/trycaedral/caedral-go
 
 go 1.23.0
 

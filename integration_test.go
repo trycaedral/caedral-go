@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/caedral/caedral-go"
+	"github.com/trycaedral/caedral-go"
 )
 
 var (

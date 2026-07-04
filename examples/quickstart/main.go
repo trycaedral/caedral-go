@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/caedral/caedral-go"
+	"github.com/trycaedral/caedral-go"
 )
 
 func loadRootEnv() {
