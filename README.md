@@ -7,7 +7,7 @@ Official Go client for the [Caedral API](https://caedral.com). OpenAI-compatible
 ## Installation
 
 ```bash
-go get github.com/trycaedral/caedral-go
+go get github.com/trycaedral/caedral-go@v1.0.0
 ```
 
 Local development:
