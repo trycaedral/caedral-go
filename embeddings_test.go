@@ -11,7 +11,7 @@ import (
 	"github.com/trycaedral/caedral-go"
 )
 
-func newEmbeddingsTestClient(handler http.HandlerFunc) (*caedral.Client, *httptest.Server) {
+func newEmbeddingsTestClient(t *testing.T, handler http.HandlerFunc) (*caedral.Client, *httptest.Server) {
 	server := httptest.NewServer(handler)
 	client, err := caedral.NewClient("cd_live_test", caedral.WithBaseURL(server.URL))
 	if err != nil {
@@ -23,7 +23,7 @@ func newEmbeddingsTestClient(handler http.HandlerFunc) (*caedral.Client, *httpte
 
 func TestEmbeddingsCreateDefaults(t *testing.T) {
 	var gotBody map[string]any
-	client, server := newEmbeddingsTestClient(func(w http.ResponseWriter, r *http.Request) {
+	client, server := newEmbeddingsTestClient(t, func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/v1/embeddings" {
 			t.Errorf("path = %q, want /v1/embeddings", r.URL.Path)
 		}
@@ -68,7 +68,7 @@ func TestEmbeddingsCreateDefaults(t *testing.T) {
 }
 
 func TestEmbeddingsCreateRejectsUnsupportedModel(t *testing.T) {
-	client, server := newEmbeddingsTestClient(func(w http.ResponseWriter, r *http.Request) {
+	client, server := newEmbeddingsTestClient(t, func(w http.ResponseWriter, r *http.Request) {
 		t.Fatal("request should not reach server")
 	})
 	defer server.Close()
@@ -87,7 +87,7 @@ func TestEmbeddingsCreateRejectsUnsupportedModel(t *testing.T) {
 }
 
 func TestEmbeddingsCreateRejectsUnsupportedDimensions(t *testing.T) {
-	client, server := newEmbeddingsTestClient(func(w http.ResponseWriter, r *http.Request) {
+	client, server := newEmbeddingsTestClient(t, func(w http.ResponseWriter, r *http.Request) {
 		t.Fatal("request should not reach server")
 	})
 	defer server.Close()
