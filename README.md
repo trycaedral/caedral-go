@@ -1,13 +1,13 @@
 # Caedral Go SDK
 
-Official Go client for the [Caedral API](https://caedral.com). OpenAI-compatible request shapes with idiomatic Go patterns (`context.Context`, functional options, channel-based streaming).
+Official Go client for the [Caedral API](https://caedral.com) (**v1.0.0**). OpenAI-compatible request shapes with idiomatic Go (`context.Context`, functional options, channel-based streaming).
 
-> **Module path:** This repository uses `github.com/trycaedral/caedral-go` as a placeholder import path. Replace it with your published module path (for example `github.com/your-org/caedral-go`) before releasing.
+**Module:** `github.com/trycaedral/caedral-go`
 
 ## Installation
 
 ```bash
-go get github.com/trycaedral/caedral-go
+go get github.com/trycaedral/caedral-go@v1.0.0
 ```
 
 Local development:
@@ -137,10 +137,22 @@ fmt.Println(usage.WeeklyPool.Remaining)
 
 ### Embeddings
 
+Default model is `caedral-embed-e1-small-v1` (384 dimensions). Omit `Model` and `Dimensions` to use defaults.
+
 ```go
 result, err := client.Embeddings.Create(ctx, caedral.EmbeddingCreateRequest{
-    Model: "caedral-embed",
     Input: "Caedral unifies frontier models behind one API.",
+})
+```
+
+Explicit model and dimensions:
+
+```go
+dims := 384
+result, err := client.Embeddings.Create(ctx, caedral.EmbeddingCreateRequest{
+    Model:      caedral.DefaultEmbeddingModel,
+    Input:      "Caedral unifies frontier models behind one API.",
+    Dimensions: &dims,
 })
 ```
 
