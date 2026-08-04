@@ -137,10 +137,22 @@ fmt.Println(usage.WeeklyPool.Remaining)
 
 ### Embeddings
 
+Default model is `caedral-embed-e1-small-v1` (384 dimensions). Omit `Model` and `Dimensions` to use defaults.
+
 ```go
 result, err := client.Embeddings.Create(ctx, caedral.EmbeddingCreateRequest{
-    Model: "caedral-embed",
     Input: "Caedral unifies frontier models behind one API.",
+})
+```
+
+Explicit model and dimensions:
+
+```go
+dims := 384
+result, err := client.Embeddings.Create(ctx, caedral.EmbeddingCreateRequest{
+    Model:      caedral.DefaultEmbeddingModel,
+    Input:      "Caedral unifies frontier models behind one API.",
+    Dimensions: &dims,
 })
 ```
 

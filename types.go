@@ -107,8 +107,9 @@ type UsageSummary struct {
 
 // EmbeddingCreateRequest configures an embeddings call.
 type EmbeddingCreateRequest struct {
-	Model string `json:"model"`
-	Input any    `json:"input"`
+	Model      string `json:"model"`
+	Input      any    `json:"input"`
+	Dimensions *int   `json:"dimensions,omitempty"`
 }
 
 // EmbeddingData is one embedding vector.
