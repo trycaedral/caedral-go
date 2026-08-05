@@ -29,9 +29,11 @@ func (s EmbeddingsService) Create(ctx context.Context, req EmbeddingCreateReques
 	}
 
 	body := EmbeddingCreateRequest{
-		Model:      model,
-		Input:      req.Input,
-		Dimensions: &dimensions,
+		Model:          model,
+		Input:          req.Input,
+		Dimensions:     &dimensions,
+		InputType:      req.InputType,
+		EncodingFormat: req.EncodingFormat,
 	}
 
 	var out EmbeddingCreateResponse

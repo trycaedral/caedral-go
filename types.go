@@ -88,10 +88,10 @@ type WeeklyPool struct {
 
 // OverageSummary summarizes overage billing.
 type OverageSummary struct {
-	Enabled         bool `json:"enabled"`
-	LimitCents      *int `json:"limitCents"`
-	UsedCents       int  `json:"usedCents"`
-	RemainingCents  *int `json:"remainingCents"`
+	Enabled        bool `json:"enabled"`
+	LimitCents     *int `json:"limitCents"`
+	UsedCents      int  `json:"usedCents"`
+	RemainingCents *int `json:"remainingCents"`
 }
 
 // UsageSummary is the account usage response.
@@ -107,9 +107,11 @@ type UsageSummary struct {
 
 // EmbeddingCreateRequest configures an embeddings call.
 type EmbeddingCreateRequest struct {
-	Model      string `json:"model"`
-	Input      any    `json:"input"`
-	Dimensions *int   `json:"dimensions,omitempty"`
+	Model          string `json:"model"`
+	Input          any    `json:"input"`
+	Dimensions     *int   `json:"dimensions,omitempty"`
+	InputType      string `json:"input_type,omitempty"`
+	EncodingFormat string `json:"encoding_format,omitempty"`
 }
 
 // EmbeddingData is one embedding vector.
@@ -121,9 +123,9 @@ type EmbeddingData struct {
 
 // EmbeddingCreateResponse is the embeddings API response.
 type EmbeddingCreateResponse struct {
-	Object string          `json:"object"`
-	Model  string          `json:"model"`
-	Data   []EmbeddingData `json:"data"`
+	Object string           `json:"object"`
+	Model  string           `json:"model"`
+	Data   []EmbeddingData  `json:"data"`
 	Usage  *CompletionUsage `json:"usage,omitempty"`
 }
 
@@ -143,8 +145,8 @@ type ImageData struct {
 
 // ImageGenerateResponse is the image generation response.
 type ImageGenerateResponse struct {
-	Model string      `json:"model"`
-	Data  []ImageData `json:"data"`
+	Model string           `json:"model"`
+	Data  []ImageData      `json:"data"`
 	Usage *CompletionUsage `json:"usage,omitempty"`
 }
 
@@ -172,8 +174,8 @@ type RerankCreateRequest struct {
 
 // RerankResult is one reranked document.
 type RerankResult struct {
-	Index           int     `json:"index"`
-	RelevanceScore  float64 `json:"relevance_score"`
+	Index          int     `json:"index"`
+	RelevanceScore float64 `json:"relevance_score"`
 }
 
 // RerankCreateResponse is the rerank API response.
