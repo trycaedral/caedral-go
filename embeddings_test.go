@@ -105,3 +105,168 @@ func TestEmbeddingsCreateRejectsUnsupportedDimensions(t *testing.T) {
 		t.Fatalf("error = %q", err.Error())
 	}
 }
+
+func TestEmbeddingsCreateLegacyAlias(t *testing.T) {
+	var gotBody map[string]any
+	client, server := newEmbeddingsTestClient(t, func(w http.ResponseWriter, r *http.Request) {
+		raw, err := io.ReadAll(r.Body)
+		if err != nil {
+			t.Fatalf("read body: %v", err)
+		}
+		if err := json.Unmarshal(raw, &gotBody); err != nil {
+			t.Fatalf("decode body: %v", err)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{
+			"object": "list",
+			"model": "caedral-embed-e1-small-v1",
+			"data": [{"object": "embedding", "index": 0, "embedding": [0.1]}],
+			"usage": {"prompt_tokens": 1, "total_tokens": 1, "completion_tokens": 0}
+		}`))
+	})
+	defer server.Close()
+
+	ctx := context.Background()
+	_, err := client.Embeddings.Create(ctx, caedral.EmbeddingCreateRequest{
+		Model: caedral.LegacyEmbeddingModelAlias,
+		Input: "legacy alias text",
+	})
+	if err != nil {
+		t.Fatalf("create: %v", err)
+	}
+	if gotBody["model"] != caedral.LegacyEmbeddingModelAlias {
+		t.Fatalf("model = %v, want %q", gotBody["model"], caedral.LegacyEmbeddingModelAlias)
+	}
+}
+
+func TestEmbeddingsCreateInputTypeQuery(t *testing.T) {
+	var gotBody map[string]any
+	client, server := newEmbeddingsTestClient(t, func(w http.ResponseWriter, r *http.Request) {
+		raw, err := io.ReadAll(r.Body)
+		if err != nil {
+			t.Fatalf("read body: %v", err)
+		}
+		if err := json.Unmarshal(raw, &gotBody); err != nil {
+			t.Fatalf("decode body: %v", err)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{
+			"object": "list",
+			"model": "caedral-embed-e1-small-v1",
+			"data": [{"object": "embedding", "index": 0, "embedding": [0.1]}],
+			"usage": {"prompt_tokens": 1, "total_tokens": 1, "completion_tokens": 0}
+		}`))
+	})
+	defer server.Close()
+
+	ctx := context.Background()
+	_, err := client.Embeddings.Create(ctx, caedral.EmbeddingCreateRequest{
+		Input:     "what is semantic search?",
+		InputType: "search_query",
+	})
+	if err != nil {
+		t.Fatalf("create: %v", err)
+	}
+	if gotBody["input_type"] != "search_query" {
+		t.Fatalf("input_type = %v, want %q", gotBody["input_type"], "search_query")
+	}
+}
+
+func TestEmbeddingsCreateInputTypeDocument(t *testing.T) {
+	var gotBody map[string]any
+	client, server := newEmbeddingsTestClient(t, func(w http.ResponseWriter, r *http.Request) {
+		raw, err := io.ReadAll(r.Body)
+		if err != nil {
+			t.Fatalf("read body: %v", err)
+		}
+		if err := json.Unmarshal(raw, &gotBody); err != nil {
+			t.Fatalf("decode body: %v", err)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{
+			"object": "list",
+			"model": "caedral-embed-e1-small-v1",
+			"data": [{"object": "embedding", "index": 0, "embedding": [0.1]}],
+			"usage": {"prompt_tokens": 1, "total_tokens": 1, "completion_tokens": 0}
+		}`))
+	})
+	defer server.Close()
+
+	ctx := context.Background()
+	_, err := client.Embeddings.Create(ctx, caedral.EmbeddingCreateRequest{
+		Input:     "document body for indexing",
+		InputType: "search_document",
+	})
+	if err != nil {
+		t.Fatalf("create: %v", err)
+	}
+	if gotBody["input_type"] != "search_document" {
+		t.Fatalf("input_type = %v, want %q", gotBody["input_type"], "search_document")
+	}
+}
+
+func TestEmbeddingsCreateEncodingFormatFloat(t *testing.T) {
+	var gotBody map[string]any
+	client, server := newEmbeddingsTestClient(t, func(w http.ResponseWriter, r *http.Request) {
+		raw, err := io.ReadAll(r.Body)
+		if err != nil {
+			t.Fatalf("read body: %v", err)
+		}
+		if err := json.Unmarshal(raw, &gotBody); err != nil {
+			t.Fatalf("decode body: %v", err)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{
+			"object": "list",
+			"model": "caedral-embed-e1-small-v1",
+			"data": [{"object": "embedding", "index": 0, "embedding": [0.1]}],
+			"usage": {"prompt_tokens": 1, "total_tokens": 1, "completion_tokens": 0}
+		}`))
+	})
+	defer server.Close()
+
+	ctx := context.Background()
+	_, err := client.Embeddings.Create(ctx, caedral.EmbeddingCreateRequest{
+		Input:          "float vectors",
+		EncodingFormat: "float",
+	})
+	if err != nil {
+		t.Fatalf("create: %v", err)
+	}
+	if gotBody["encoding_format"] != "float" {
+		t.Fatalf("encoding_format = %v, want %q", gotBody["encoding_format"], "float")
+	}
+}
+
+func TestEmbeddingsCreateEncodingFormatBase64(t *testing.T) {
+	var gotBody map[string]any
+	client, server := newEmbeddingsTestClient(t, func(w http.ResponseWriter, r *http.Request) {
+		raw, err := io.ReadAll(r.Body)
+		if err != nil {
+			t.Fatalf("read body: %v", err)
+		}
+		if err := json.Unmarshal(raw, &gotBody); err != nil {
+			t.Fatalf("decode body: %v", err)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{
+			"object": "list",
+			"model": "caedral-embed-e1-small-v1",
+			"data": [{"object": "embedding", "index": 0, "embedding": [0.1]}],
+			"usage": {"prompt_tokens": 1, "total_tokens": 1, "completion_tokens": 0}
+		}`))
+	})
+	defer server.Close()
+
+	ctx := context.Background()
+	_, err := client.Embeddings.Create(ctx, caedral.EmbeddingCreateRequest{
+		Input:          "base64 vectors",
+		EncodingFormat: "base64",
+	})
+	if err != nil {
+		t.Fatalf("create: %v", err)
+	}
+	if gotBody["encoding_format"] != "base64" {
+		t.Fatalf("encoding_format = %v, want %q", gotBody["encoding_format"], "base64")
+	}
+}

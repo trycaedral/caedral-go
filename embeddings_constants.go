@@ -5,11 +5,18 @@ import "fmt"
 // DefaultEmbeddingModel is the default Caedral E1 Small embedding model.
 const DefaultEmbeddingModel = "caedral-embed-e1-small-v1"
 
+// CanonicalEmbeddingModel is the inference backend model id for E1 Small.
+const CanonicalEmbeddingModel = DefaultEmbeddingModel
+
+// LegacyEmbeddingModelAlias is the prepaid API alias for DefaultEmbeddingModel.
+const LegacyEmbeddingModelAlias = "caedral-embed"
+
 // DefaultEmbeddingDimensions is the native vector size for DefaultEmbeddingModel.
 const DefaultEmbeddingDimensions = 384
 
 var supportedEmbeddingModels = map[string]struct{}{
-	DefaultEmbeddingModel: {},
+	DefaultEmbeddingModel:     {},
+	LegacyEmbeddingModelAlias: {},
 }
 
 var supportedEmbeddingDimensions = map[int]struct{}{
