@@ -1,13 +1,13 @@
 # Caedral Go SDK
 
-Official Go client for the [Caedral API](https://caedral.com) (**v1.0.0**). OpenAI-compatible request shapes with idiomatic Go (`context.Context`, functional options, channel-based streaming).
+Official Go client for the [Caedral API](https://caedral.com) (**v2.1.0**). OpenAI-compatible request shapes with idiomatic Go (`context.Context`, functional options, channel-based streaming).
 
 **Module:** `github.com/trycaedral/caedral-go`
 
 ## Installation
 
 ```bash
-go get github.com/trycaedral/caedral-go@v1.0.0
+go get github.com/trycaedral/caedral-go@v2.1.0
 ```
 
 Local development:
