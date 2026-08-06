@@ -182,7 +182,7 @@ ranked, err := client.Rerank.Create(ctx, caedral.RerankCreateRequest{
     Model:     "caedral-rerank",
     Query:     "billing and subscriptions",
     Documents: []string{"Caedral pricing tiers", "Local gateway port 5001"},
-    TopN:      intPtr(2),
+    TopN:      caedral.IntPtr(2),
 })
 ```
 

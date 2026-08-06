@@ -37,3 +37,8 @@ func WithTimeout(timeout time.Duration) Option {
 		c.timeout = timeout
 	}
 }
+
+// IntPtr returns a pointer to the given int value.
+func IntPtr(value int) *int {
+	return &value
+}

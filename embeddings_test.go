@@ -2,8 +2,11 @@ package caedral_test
 
 import (
 	"context"
+	"encoding/base64"
+	"encoding/binary"
 	"encoding/json"
 	"io"
+	"math"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -240,6 +243,15 @@ func TestEmbeddingsCreateEncodingFormatFloat(t *testing.T) {
 
 func TestEmbeddingsCreateEncodingFormatBase64(t *testing.T) {
 	var gotBody map[string]any
+	dims := caedral.DefaultEmbeddingDimensions
+	vector := make([]float32, dims)
+	vector[0] = 0.1
+	packed := make([]byte, dims*4)
+	for i, value := range vector {
+		binary.LittleEndian.PutUint32(packed[i*4:], math.Float32bits(value))
+	}
+	encoded := base64.StdEncoding.EncodeToString(packed)
+
 	client, server := newEmbeddingsTestClient(t, func(w http.ResponseWriter, r *http.Request) {
 		raw, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -252,14 +264,14 @@ func TestEmbeddingsCreateEncodingFormatBase64(t *testing.T) {
 		_, _ = w.Write([]byte(`{
 			"object": "list",
 			"model": "caedral-embed-e1-small-v1",
-			"data": [{"object": "embedding", "index": 0, "embedding": [0.1]}],
+			"data": [{"object": "embedding", "index": 0, "embedding": "` + encoded + `"}],
 			"usage": {"prompt_tokens": 1, "total_tokens": 1, "completion_tokens": 0}
 		}`))
 	})
 	defer server.Close()
 
 	ctx := context.Background()
-	_, err := client.Embeddings.Create(ctx, caedral.EmbeddingCreateRequest{
+	resp, err := client.Embeddings.Create(ctx, caedral.EmbeddingCreateRequest{
 		Input:          "base64 vectors",
 		EncodingFormat: "base64",
 	})
@@ -268,5 +280,14 @@ func TestEmbeddingsCreateEncodingFormatBase64(t *testing.T) {
 	}
 	if gotBody["encoding_format"] != "base64" {
 		t.Fatalf("encoding_format = %v, want %q", gotBody["encoding_format"], "base64")
+	}
+	if len(resp.Data) != 1 {
+		t.Fatalf("data len = %d, want 1", len(resp.Data))
+	}
+	if len(resp.Data[0].Embedding) != dims {
+		t.Fatalf("embedding len = %d, want %d", len(resp.Data[0].Embedding), dims)
+	}
+	if resp.Data[0].Embedding[0] < 0.099 || resp.Data[0].Embedding[0] > 0.101 {
+		t.Fatalf("embedding[0] = %v, want ~0.1", resp.Data[0].Embedding[0])
 	}
 }
