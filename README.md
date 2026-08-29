@@ -132,7 +132,7 @@ models, err := client.Models.List(ctx)
 
 ```go
 usage, err := client.Usage.Get(ctx)
-fmt.Println(usage.WeeklyPool.Remaining)
+fmt.Println(usage.BalanceCents, usage.BalanceMilliCents)
 ```
 
 ### Embeddings

@@ -94,15 +94,16 @@ type OverageSummary struct {
 	RemainingCents *int `json:"remainingCents"`
 }
 
-// UsageSummary is the account usage response.
+// UsageSummary is the account usage response from GET /v1/usage.
 type UsageSummary struct {
-	AccountStatus                  string         `json:"accountStatus"`
-	Plan                           string         `json:"plan"`
-	PlanStatus                     string         `json:"planStatus"`
-	BalanceCents                   int            `json:"balanceCents"`
-	WeeklyPool                     WeeklyPool     `json:"weeklyPool"`
-	Overage                        OverageSummary `json:"overage"`
-	BalanceWeightedUnitsAffordable int            `json:"balanceWeightedUnitsAffordable"`
+	AccountStatus                  string          `json:"accountStatus"`
+	BalanceCents                   int             `json:"balanceCents"`
+	BalanceMilliCents              int             `json:"balanceMilliCents,omitempty"`
+	BalanceWeightedUnitsAffordable int             `json:"balanceWeightedUnitsAffordable,omitempty"`
+	Plan                           string          `json:"plan,omitempty"`
+	PlanStatus                     string          `json:"planStatus,omitempty"`
+	WeeklyPool                     *WeeklyPool     `json:"weeklyPool,omitempty"`
+	Overage                        *OverageSummary `json:"overage,omitempty"`
 }
 
 // EmbeddingCreateRequest configures an embeddings call.
