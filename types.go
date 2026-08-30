@@ -94,15 +94,45 @@ type OverageSummary struct {
 	RemainingCents *int `json:"remainingCents"`
 }
 
-// UsageSummary is the account usage response.
+// UsagePool is an included quota pool from GET /v1/usage.
+type UsagePool struct {
+	UsedMilli      int     `json:"usedMilli"`
+	LimitMilli     int     `json:"limitMilli"`
+	UsedFormatted  string  `json:"usedFormatted,omitempty"`
+	LimitFormatted string  `json:"limitFormatted,omitempty"`
+	PercentUsed    float64 `json:"percentUsed"`
+	Available      bool    `json:"available"`
+}
+
+// UsagePlan is the current commercial plan.
+type UsagePlan struct {
+	ID         string `json:"id"`
+	Name       string `json:"name"`
+	Interval   string `json:"interval"`
+	Status     string `json:"status"`
+	PriceCents int    `json:"priceCents,omitempty"`
+}
+
+// UsageOnDemand is optional usage after included quota.
+type UsageOnDemand struct {
+	Mode             string `json:"mode"`
+	Allowed          bool   `json:"allowed"`
+	Blocked          bool   `json:"blocked,omitempty"`
+	Enabled          bool   `json:"enabled,omitempty"`
+	AccruedMilli     int    `json:"accruedMilli"`
+	SpentMilli       int    `json:"spentMilli,omitempty"`
+	AccruedFormatted string `json:"accruedFormatted,omitempty"`
+	SpentFormatted   string `json:"spentFormatted,omitempty"`
+}
+
+// UsageSummary is the account usage response from GET /v1/usage.
 type UsageSummary struct {
-	AccountStatus                  string         `json:"accountStatus"`
-	Plan                           string         `json:"plan"`
-	PlanStatus                     string         `json:"planStatus"`
-	BalanceCents                   int            `json:"balanceCents"`
-	WeeklyPool                     WeeklyPool     `json:"weeklyPool"`
-	Overage                        OverageSummary `json:"overage"`
-	BalanceWeightedUnitsAffordable int            `json:"balanceWeightedUnitsAffordable"`
+	AccountStatus  string         `json:"accountStatus"`
+	Plan           UsagePlan      `json:"plan"`
+	BillingPeriod  map[string]any `json:"billingPeriod,omitempty"`
+	Pools          map[string]UsagePool `json:"pools"`
+	OnDemand       UsageOnDemand  `json:"onDemand"`
+	Quota          map[string]any `json:"quota,omitempty"`
 }
 
 // EmbeddingCreateRequest configures an embeddings call.
