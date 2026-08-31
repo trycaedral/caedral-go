@@ -13,6 +13,14 @@ type NotreOptions struct {
 	Telemetry *bool  `json:"telemetry,omitempty"`
 }
 
+// NotrePublicMetadata is opt-in response metadata when telemetry is requested.
+type NotrePublicMetadata struct {
+	Enabled       bool   `json:"enabled"`
+	Mode          string `json:"mode"`
+	Intervened    bool   `json:"intervened"`
+	FallbackUsed  bool   `json:"fallback_used"`
+}
+
 // ChatCompletionRequest configures a chat completion call.
 type ChatCompletionRequest struct {
 	Model            string        `json:"model"`
@@ -50,6 +58,7 @@ type ChatCompletion struct {
 	Model   string                 `json:"model"`
 	Choices []ChatCompletionChoice `json:"choices"`
 	Usage   *CompletionUsage       `json:"usage,omitempty"`
+	Notre   *NotrePublicMetadata   `json:"notre,omitempty"`
 }
 
 // ChatCompletionChunkChoice is a streaming delta choice.

@@ -228,7 +228,7 @@ func TestUsageGet(t *testing.T) {
 	if err != nil {
 		t.Fatalf("usage.get: %v", err)
 	}
-	if usage.AccountStatus == "" || usage.Plan == "" {
+	if usage.AccountStatus == "" || usage.Plan.ID == "" {
 		t.Fatalf("unexpected usage payload: %+v", usage)
 	}
 }
