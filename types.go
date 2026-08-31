@@ -7,6 +7,12 @@ type ChatMessage struct {
 	Name    string  `json:"name,omitempty"`
 }
 
+// NotreOptions configures optional Notre platform optimization.
+type NotreOptions struct {
+	Mode      string `json:"mode,omitempty"`
+	Telemetry *bool  `json:"telemetry,omitempty"`
+}
+
 // ChatCompletionRequest configures a chat completion call.
 type ChatCompletionRequest struct {
 	Model            string        `json:"model"`
@@ -19,6 +25,7 @@ type ChatCompletionRequest struct {
 	PresencePenalty  *float64      `json:"presence_penalty,omitempty"`
 	Stop             any           `json:"stop,omitempty"`
 	User             string        `json:"user,omitempty"`
+	Notre            *NotreOptions `json:"notre,omitempty"`
 }
 
 // ChatCompletionChoice is one completion choice.
