@@ -104,3 +104,38 @@ func TestResponseTelemetryMetadataV2(t *testing.T) {
 		t.Fatalf("value_usd: %+v", resp.Notre)
 	}
 }
+
+func TestResponseTelemetryMetadataV3(t *testing.T) {
+	raw := loadFixture(t, "notre-response-telemetry-v3.json")
+	var resp ChatCompletion
+	if err := json.Unmarshal(raw, &resp); err != nil {
+		t.Fatalf("unmarshal: %v", err)
+	}
+	if resp.Notre == nil {
+		t.Fatal("expected notre metadata")
+	}
+	if resp.Notre.Shape != "chat" {
+		t.Fatalf("shape: %+v", resp.Notre)
+	}
+	if resp.Notre.ContractVersion == nil || *resp.Notre.ContractVersion != 3 {
+		t.Fatalf("contract_version: %+v", resp.Notre)
+	}
+	if resp.Notre.SavedBreakdown == nil {
+		t.Fatal("expected saved_breakdown")
+	}
+	if resp.Notre.SavedBreakdown.CacheHitTokens == nil || *resp.Notre.SavedBreakdown.CacheHitTokens != 640 {
+		t.Fatalf("cache_hit_tokens: %+v", resp.Notre.SavedBreakdown)
+	}
+	if resp.Notre.SavedBreakdown.DedupTokens == nil || *resp.Notre.SavedBreakdown.DedupTokens != 20 {
+		t.Fatalf("dedup_tokens: %+v", resp.Notre.SavedBreakdown)
+	}
+	if resp.Notre.SavedBreakdown.PrefilterTokens == nil || *resp.Notre.SavedBreakdown.PrefilterTokens != 0 {
+		t.Fatalf("prefilter_tokens: %+v", resp.Notre.SavedBreakdown)
+	}
+	if resp.Notre.InputSaved == nil || resp.Notre.InputBefore == nil || resp.Notre.InputSent == nil {
+		t.Fatalf("economy fields: %+v", resp.Notre)
+	}
+	if *resp.Notre.InputSaved != *resp.Notre.InputBefore-*resp.Notre.InputSent {
+		t.Fatalf("saved invariant: %+v", resp.Notre)
+	}
+}

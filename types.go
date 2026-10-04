@@ -13,17 +13,28 @@ type NotreOptions struct {
 	Telemetry *bool  `json:"telemetry,omitempty"`
 }
 
+// NotreSavedBreakdown carries contract-V3 per-mechanism savings.
+type NotreSavedBreakdown struct {
+	CacheHitTokens  *int `json:"cache_hit_tokens,omitempty"`
+	DedupTokens     *int `json:"dedup_tokens,omitempty"`
+	PrefilterTokens *int `json:"prefilter_tokens,omitempty"`
+}
+
 // NotrePublicMetadata is customer-facing Notre data on a chat completion.
 type NotrePublicMetadata struct {
-	Enabled      bool    `json:"enabled"`
-	Mode         string  `json:"mode"`
-	Intervened   bool    `json:"intervened"`
-	FallbackUsed bool    `json:"fallback_used"`
-	InputBefore  *int    `json:"input_before,omitempty"`
-	InputSent    *int    `json:"input_sent,omitempty"`
-	InputSaved   *int    `json:"input_saved,omitempty"`
+	Enabled      bool     `json:"enabled"`
+	Mode         string   `json:"mode"`
+	Intervened   bool     `json:"intervened"`
+	FallbackUsed bool     `json:"fallback_used"`
+	InputBefore  *int     `json:"input_before,omitempty"`
+	InputSent    *int     `json:"input_sent,omitempty"`
+	InputSaved   *int     `json:"input_saved,omitempty"`
 	ValueUSD     *float64 `json:"value_usd,omitempty"`
-	Result       string  `json:"result,omitempty"`
+	Result       string   `json:"result,omitempty"`
+	// Contract V3 shape fields (embeddings/rerank economy).
+	Shape           string               `json:"shape,omitempty"`
+	ContractVersion *int                 `json:"contract_version,omitempty"`
+	SavedBreakdown  *NotreSavedBreakdown `json:"saved_breakdown,omitempty"`
 }
 
 // ChatCompletionRequest configures a chat completion call.
@@ -148,12 +159,12 @@ type UsageOnDemand struct {
 
 // UsageSummary is the account usage response from GET /v1/usage.
 type UsageSummary struct {
-	AccountStatus  string         `json:"accountStatus"`
-	Plan           UsagePlan      `json:"plan"`
-	BillingPeriod  map[string]any `json:"billingPeriod,omitempty"`
-	Pools          map[string]UsagePool `json:"pools"`
-	OnDemand       UsageOnDemand  `json:"onDemand"`
-	Quota          map[string]any `json:"quota,omitempty"`
+	AccountStatus string               `json:"accountStatus"`
+	Plan          UsagePlan            `json:"plan"`
+	BillingPeriod map[string]any       `json:"billingPeriod,omitempty"`
+	Pools         map[string]UsagePool `json:"pools"`
+	OnDemand      UsageOnDemand        `json:"onDemand"`
+	Quota         map[string]any       `json:"quota,omitempty"`
 }
 
 // EmbeddingCreateRequest configures an embeddings call.
