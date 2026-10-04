@@ -70,4 +70,37 @@ func TestResponseTelemetryMetadataV1(t *testing.T) {
 	if !resp.Notre.Enabled || resp.Notre.Mode != "auto" || resp.Notre.Intervened || resp.Notre.FallbackUsed {
 		t.Fatalf("unexpected metadata: %+v", resp.Notre)
 	}
+	// V1 base shape: no economy fields.
+	if resp.Notre.InputSaved != nil || resp.Notre.Result != "" {
+		t.Fatalf("unexpected economy on V1 fixture: %+v", resp.Notre)
+	}
+}
+
+func TestResponseTelemetryMetadataV2(t *testing.T) {
+	raw := loadFixture(t, "notre-response-telemetry-v2.json")
+	var resp ChatCompletion
+	if err := json.Unmarshal(raw, &resp); err != nil {
+		t.Fatalf("unmarshal: %v", err)
+	}
+	if resp.Notre == nil {
+		t.Fatal("expected notre metadata")
+	}
+	if !resp.Notre.Enabled || !resp.Notre.Intervened || resp.Notre.FallbackUsed {
+		t.Fatalf("unexpected metadata: %+v", resp.Notre)
+	}
+	if resp.Notre.InputBefore == nil || *resp.Notre.InputBefore != 1200 {
+		t.Fatalf("input_before: %+v", resp.Notre)
+	}
+	if resp.Notre.InputSent == nil || *resp.Notre.InputSent != 310 {
+		t.Fatalf("input_sent: %+v", resp.Notre)
+	}
+	if resp.Notre.InputSaved == nil || *resp.Notre.InputSaved != 890 {
+		t.Fatalf("input_saved: %+v", resp.Notre)
+	}
+	if resp.Notre.Result != "optimized" {
+		t.Fatalf("result: %+v", resp.Notre)
+	}
+	if resp.Notre.ValueUSD == nil || *resp.Notre.ValueUSD < 0.0026 || *resp.Notre.ValueUSD > 0.0028 {
+		t.Fatalf("value_usd: %+v", resp.Notre)
+	}
 }

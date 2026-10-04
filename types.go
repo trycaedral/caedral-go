@@ -13,12 +13,17 @@ type NotreOptions struct {
 	Telemetry *bool  `json:"telemetry,omitempty"`
 }
 
-// NotrePublicMetadata is opt-in response metadata when telemetry is requested.
+// NotrePublicMetadata is customer-facing Notre data on a chat completion.
 type NotrePublicMetadata struct {
-	Enabled       bool   `json:"enabled"`
-	Mode          string `json:"mode"`
-	Intervened    bool   `json:"intervened"`
-	FallbackUsed  bool   `json:"fallback_used"`
+	Enabled      bool    `json:"enabled"`
+	Mode         string  `json:"mode"`
+	Intervened   bool    `json:"intervened"`
+	FallbackUsed bool    `json:"fallback_used"`
+	InputBefore  *int    `json:"input_before,omitempty"`
+	InputSent    *int    `json:"input_sent,omitempty"`
+	InputSaved   *int    `json:"input_saved,omitempty"`
+	ValueUSD     *float64 `json:"value_usd,omitempty"`
+	Result       string  `json:"result,omitempty"`
 }
 
 // ChatCompletionRequest configures a chat completion call.
